@@ -1,11 +1,13 @@
-FROM alpine:edge
+FROM alpine:3.13.0
 
 RUN apk add --no-cache openvpn tinyproxy runit
 
-RUN apk add --no-cache ca-certificates bash wget openresolv \
-    && apk add --no-cache --virtual .build-deps gcc make musl-dev \
-    && cd /tmp \
-    && wget https://github.com/rofl0r/microsocks/archive/v1.0.1.tar.gz \
+RUN apk add --no-cache \
+    bash ca-certificates wget curl \
+    bind-tools openssh-client openresolv openssl \
+    && apk add --no-cache --virtual .build-deps gcc make musl-dev
+
+RUN cd /tmp && wget https://github.com/rofl0r/microsocks/archive/v1.0.1.tar.gz \
     && tar -xzvf v1.0.1.tar.gz \
     && cd microsocks-1.0.1 \
     && make \

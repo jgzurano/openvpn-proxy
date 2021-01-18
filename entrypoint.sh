@@ -25,9 +25,10 @@ fi
 openvpn \
   --config "$OVPN_FILE" \
   --auth-user-pass "$OVPN_CREDS" \
+  --auth-retry interact \
+  --auth-nocache \
   --script-security 2 \
   --up /etc/openvpn/update-resolv-conf.sh --up-restart \
   --down /etc/openvpn/update-resolv-conf.sh --down-pre \
   --dhcp-option DOMAIN "$OVPN_DOMAIN" \
-  --keepalive 10 60 \
-  --auth-retry interact
+  --keepalive 10 60
