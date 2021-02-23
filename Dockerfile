@@ -5,6 +5,7 @@ RUN apk add --no-cache openvpn tinyproxy runit
 RUN apk add --no-cache \
     bash ca-certificates wget curl \
     bind-tools openssh-client openresolv openssl \
+    nmap nmap-scripts \
     && apk add --no-cache --virtual .build-deps gcc make musl-dev
 
 RUN cd /tmp && wget https://github.com/rofl0r/microsocks/archive/v1.0.1.tar.gz \
