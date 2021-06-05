@@ -1,21 +1,20 @@
-FROM alpine:3.13.0
+FROM alpine:edge
+LABEL maintainer "Juan Zurano jgzurano@gmail.com"
 
-RUN apk add --no-cache openvpn tinyproxy runit
-
-RUN apk add --no-cache \
+RUN apk add --no-cache openvpn tinyproxy runit \
     bash ca-certificates wget curl \
     bind-tools openssh-client openresolv openssl \
-    nmap nmap-scripts \
-    && apk add --no-cache --virtual .build-deps gcc make musl-dev
+    nmap nmap-scripts
 
-RUN cd /tmp && wget https://github.com/rofl0r/microsocks/archive/v1.0.1.tar.gz \
-    && tar -xzvf v1.0.1.tar.gz \
-    && cd microsocks-1.0.1 \
+RUN apk add --no-cache --virtual .build-deps gcc make musl-dev \
+    && cd /tmp && wget -O microsocks.tar.gz -q https://github.com/rofl0r/microsocks/archive/v1.0.1.tar.gz \
+    && tar -xzvf microsocks.tar.gz \
+    && cd microsocks-* \
     && make \
     && make install \
     # always add the docker DNS server
     && grep -qxF 'nameserver 127.0.0.11' /etc/resolv.conf || echo 'nameserver 127.0.0.11' >> /etc/resolv.conf \
-    && apk del .build-deps wget
+    && apk del .build-deps
 
 COPY update-resolv-conf.sh /etc/openvpn/update-resolv-conf.sh
 RUN chmod +x /etc/openvpn/update-resolv-conf.sh

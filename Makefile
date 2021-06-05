@@ -1,9 +1,10 @@
 IMAGE = quay.io/jgzurano/openvpn-proxy
 TAG = latest
 
+.PHONY: build
+
 info:
-	@echo $(TAG)
-	@echo $(IMAGE)
+	@echo "image: $(IMAGE):$(TAG)"
 
 build:
-	docker build -t $(IMAGE):$(TAG) .
+	cd ./build && docker build -t $(IMAGE):$(TAG) . && cd
